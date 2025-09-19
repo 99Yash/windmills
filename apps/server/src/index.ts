@@ -4,8 +4,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { secureHeaders } from 'hono/secure-headers';
-import { createDb } from './db';
-import { auth, createAuth } from './lib/auth';
+import { auth } from './lib/auth';
 import { createContext } from './lib/context';
 import { appRouter } from './routers/index';
 import { checkHealth } from './utils/health';
@@ -18,7 +17,6 @@ type Bindings = {
   DATABASE_URL?: string;
   AUTH_SECRET?: string;
   CORS_ORIGIN?: string;
-  NODE_ENV?: string;
 };
 
 const app = new Hono<{ Bindings: Bindings }>();
@@ -54,30 +52,7 @@ app.use('*', async (c, next) => {
   })(c, next);
 });
 
-app.on(['POST', 'GET'], '/api/auth/*', async (c) => {
-  // In Cloudflare Workers, create auth with Hyperdrive connection
-  if (c.env.HYPERDRIVE) {
-    const db = createDb(c.env.HYPERDRIVE.connectionString);
-
-    // Create auth configuration with Cloudflare Workers environment variables
-    const authConfig = {
-      database: db,
-      secret: c.env.AUTH_SECRET || 'fallback-secret-for-development',
-      trustedOrigins: [c.env.CORS_ORIGIN || 'http://localhost:3001'],
-      nodeEnv: c.env.NODE_ENV || 'production',
-    };
-
-    const authInstance = createAuth(db);
-    return authInstance.handler(c.req.raw);
-  }
-
-  // Fallback to local auth for development
-  if (auth) {
-    return auth.handler(c.req.raw);
-  }
-
-  throw new Error('No database connection available for authentication');
-});
+app.on(['POST', 'GET'], '/api/auth/*', (c) => auth.handler(c.req.raw));
 
 app.use(
   '/trpc/*',

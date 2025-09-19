@@ -1,13 +1,11 @@
 import * as schema from '@windmills/db';
 import { betterAuth, type BetterAuthOptions } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
-import { createDb, db } from '../db';
+import { db } from '../db';
 
-// Create auth configuration function that can work with both local dev and Cloudflare Workers
-const createAuthConfig = (
-  database: ReturnType<typeof createDb>
-): BetterAuthOptions => ({
-  database: drizzleAdapter(database, {
+// Note: db is guaranteed to be non-null - will throw during module initialization if DATABASE_URL is missing
+export const auth = betterAuth<BetterAuthOptions>({
+  database: drizzleAdapter(db, {
     provider: 'pg',
     schema: schema,
   }),
@@ -25,16 +23,9 @@ const createAuthConfig = (
 
   advanced: {
     defaultCookieAttributes: {
-      sameSite: 'lax',
+      sameSite: 'none',
       secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
     },
   },
 });
-
-// Export auth instance for local development (will be null in Cloudflare Workers)
-export const auth = db ? betterAuth(createAuthConfig(db)) : null;
-
-// Export function to create auth with specific database connection (for Cloudflare Workers)
-export const createAuth = (database: ReturnType<typeof createDb>) =>
-  betterAuth(createAuthConfig(database));
