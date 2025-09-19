@@ -26,7 +26,8 @@
   "dependencies": {},
   "devDependencies": {
     "turbo": "^2.5.4",
-    "@biomejs/biome": "^2.2.0"
+    "@biomejs/biome": "^2.2.0",
+    "wrangler": "^4.38.0"
   },
   "packageManager": "pnpm@9.6.0"
 }
