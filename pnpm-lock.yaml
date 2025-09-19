@@ -29,6 +29,12 @@ importers:
       '@trpc/server':
         specifier: ^11.5.0
         version: 11.5.1(typescript@5.9.2)
+      '@windmills/db':
+        specifier: workspace:*
+        version: link:../../packages/db
+      '@windmills/lib':
+        specifier: workspace:*
+        version: link:../../packages/lib
       better-auth:
         specifier: ^1.3.10
         version: 1.3.11(next@15.5.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -87,6 +93,12 @@ importers:
       '@trpc/tanstack-react-query':
         specifier: ^11.5.0
         version: 11.5.1(@tanstack/react-query@5.89.0(react@19.1.0))(@trpc/client@11.5.1(@trpc/server@11.5.1(typescript@5.9.2))(typescript@5.9.2))(@trpc/server@11.5.1(typescript@5.9.2))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.9.2)
+      '@windmills/api':
+        specifier: workspace:*
+        version: link:../../packages/api
+      '@windmills/lib':
+        specifier: workspace:*
+        version: link:../../packages/lib
       better-auth:
         specifier: ^1.3.10
         version: 1.3.11(next@15.5.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -151,6 +163,32 @@ importers:
       wrangler:
         specifier: ^4.23.0
         version: 4.37.1
+
+  packages/api:
+    devDependencies:
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.2
+
+  packages/db:
+    dependencies:
+      drizzle-orm:
+        specifier: ^0.44.2
+        version: 0.44.5(@types/pg@8.15.5)(kysely@0.28.7)(pg@8.16.3)
+    devDependencies:
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.2
+
+  packages/lib:
+    dependencies:
+      '@trpc/server':
+        specifier: ^11.5.1
+        version: 11.5.1(typescript@5.9.2)
+    devDependencies:
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.2
 
 packages:
 

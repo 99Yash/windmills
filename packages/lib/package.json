@@ -1,0 +1,18 @@
+{
+  "name": "@windmills/lib",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "dependencies": {
+    "@trpc/server": "^11.5.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.2"
+  }
+}
