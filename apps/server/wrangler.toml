@@ -1,0 +1,88 @@
+name = "windmills-server"
+main = "src/index.ts"
+compatibility_date = "2025-01-19"
+compatibility_flags = ["nodejs_compat"]
+
+# Node.js compatibility is enabled via compatibility_flags = ["nodejs_compat"]
+
+# Environment variables (non-sensitive)
+[vars]
+NODE_ENV = "production"
+PORT = "3000"
+HOSTNAME = "0.0.0.0"
+
+# For production secrets, use: wrangler secret put <KEY>
+# 
+# === REQUIRED SECRETS (use wrangler secret put) ===
+# wrangler secret put DATABASE_URL
+# wrangler secret put AUTH_SECRET
+# wrangler secret put CORS_ORIGIN
+# 
+# === OPTIONAL SECRETS (uncomment as needed) ===
+# wrangler secret put JWT_SECRET
+# wrangler secret put TRUSTED_ORIGINS
+# 
+# === EMAIL SECRETS (if using email auth) ===
+# wrangler secret put SMTP_HOST
+# wrangler secret put SMTP_PORT  
+# wrangler secret put SMTP_USER
+# wrangler secret put SMTP_PASS
+# wrangler secret put EMAIL_FROM
+#
+# === OAUTH SECRETS (if using OAuth) ===
+# wrangler secret put GOOGLE_CLIENT_ID
+# wrangler secret put GOOGLE_CLIENT_SECRET
+# wrangler secret put GITHUB_CLIENT_ID
+# wrangler secret put GITHUB_CLIENT_SECRET
+#
+# === API KEYS & EXTERNAL SERVICES ===
+# wrangler secret put OPENAI_API_KEY
+# wrangler secret put STRIPE_SECRET_KEY
+# wrangler secret put UPLOADTHING_SECRET
+# wrangler secret put RESEND_API_KEY
+#
+# === MONITORING ===
+# wrangler secret put SENTRY_DSN
+# wrangler secret put ANALYTICS_ID
+
+# Route configuration - update with your domain
+# [[routes]]
+# pattern = "api.yourdomain.com/*"
+# zone_name = "yourdomain.com"
+
+# Use workers.dev subdomain for testing
+workers_dev = true
+
+# Hyperdrive for PostgreSQL connection
+[[hyperdrive]]
+binding = "HYPERDRIVE"
+id = "1b758eff45624963b1dadb569a3f6e23"
+
+# Build configuration
+[build]
+command = "pnpm run build"
+
+# Performance optimizations (moved to top level)
+minify = true
+upload_source_maps = true
+
+# Limits removed for Free plan compatibility
+# [limits]
+# cpu_ms = 50000
+
+# Environment configurations
+[env.staging]
+name = "windmills-server-staging"
+vars = { NODE_ENV = "staging", PORT = "3000", HOSTNAME = "0.0.0.0" }
+
+[[env.staging.hyperdrive]]
+binding = "HYPERDRIVE"
+id = "1b758eff45624963b1dadb569a3f6e23"
+
+[env.production]  
+name = "windmills-server-production"
+vars = { NODE_ENV = "production", PORT = "3000", HOSTNAME = "0.0.0.0" }
+
+[[env.production.hyperdrive]]
+binding = "HYPERDRIVE"
+id = "1b758eff45624963b1dadb569a3f6e23"

@@ -6,17 +6,24 @@ import { db } from '../db';
 export const auth = betterAuth<BetterAuthOptions>({
   database: drizzleAdapter(db, {
     provider: 'pg',
-
     schema: schema,
   }),
-  trustedOrigins: [process.env.CORS_ORIGIN || ''],
+
+  // Use environment variable for secret (required for JWT signing)
+  secret: process.env.AUTH_SECRET || 'fallback-secret-for-development',
+
+  // Trusted origins for CORS
+  trustedOrigins: process.env.TRUSTED_ORIGINS?.split(',') ||
+    process.env.CORS_ORIGIN?.split(',') || ['http://localhost:3001'],
+
   emailAndPassword: {
     enabled: true,
   },
+
   advanced: {
     defaultCookieAttributes: {
       sameSite: 'none',
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
     },
   },

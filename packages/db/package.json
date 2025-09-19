@@ -10,6 +10,7 @@
     "build": "tsc -b"
   },
   "dependencies": {
+    "postgres": "^3.4.5",
     "drizzle-orm": "^0.44.2"
   },
   "devDependencies": {
