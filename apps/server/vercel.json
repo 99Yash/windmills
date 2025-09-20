@@ -1,13 +1,5 @@
 {
-  "functions": {
-    "src/index.ts": {
-      "runtime": "@vercel/node"
-    }
-  },
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/src/index.ts"
-    }
-  ]
+  "buildCommand": "pnpm run build",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "outputDirectory": "dist"
 }
