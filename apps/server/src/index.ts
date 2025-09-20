@@ -97,6 +97,6 @@ export default app;
 
 // For local development with Node.js
 export const config = {
-  port: env.PORT,
-  hostname: env.HOSTNAME,
+  port: process.env.PORT ? Number.parseInt(process.env.PORT) : 3000,
+  hostname: process.env.HOSTNAME || '0.0.0.0',
 };
