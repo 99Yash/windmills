@@ -9,25 +9,15 @@ import { createContext } from './lib/context';
 import { appRouter } from './routers/index';
 import { checkHealth } from './utils/health';
 
-// Define the Cloudflare Worker environment bindings
-type Bindings = {
-  HYPERDRIVE: {
-    connectionString: string;
-  };
-  DATABASE_URL?: string;
-  AUTH_SECRET?: string;
-  CORS_ORIGIN?: string;
-};
-
-const app = new Hono<{ Bindings: Bindings }>();
+// Hono app for Vercel deployment
+const app = new Hono();
 
 // Security headers - important for production
 app.use(secureHeaders());
 
 app.use(logger());
 app.use('*', async (c, next) => {
-  const corsOrigin =
-    c.env.CORS_ORIGIN || process.env.CORS_ORIGIN || 'http://localhost:3001';
+  const corsOrigin = process.env.CORS_ORIGIN || 'http://localhost:3001';
   const origins = corsOrigin.split(',');
 
   return cors({
@@ -67,11 +57,8 @@ app.use(
 // Health check endpoint
 app.get('/health', async (c) => {
   try {
-    // Pass the Hyperdrive connection to the health check
-    const connectionString =
-      c.env.HYPERDRIVE?.connectionString ||
-      c.env.DATABASE_URL ||
-      process.env.DATABASE_URL;
+    // Use environment variable for database connection
+    const connectionString = process.env.DATABASE_URL;
 
     if (!connectionString) {
       throw new Error('No database connection string available');
@@ -113,9 +100,11 @@ app.get('/', (c) => {
   });
 });
 
-// Export using Midday's pattern - works for both Cloudflare Workers and Node.js
-export default {
+// Export for Vercel (Hono app directly)
+export default app;
+
+// For local development with Node.js
+export const config = {
   port: process.env.PORT ? Number.parseInt(process.env.PORT) : 3000,
-  fetch: app.fetch,
   hostname: process.env.HOSTNAME || '0.0.0.0',
 };

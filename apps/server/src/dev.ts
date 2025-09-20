@@ -1,12 +1,12 @@
 // Development server entry point using Node.js
 import { serve } from '@hono/node-server';
-import server from './index';
+import app, { config } from './index';
 
 serve(
   {
-    fetch: server.fetch,
-    port: server.port,
-    hostname: server.hostname,
+    fetch: app.fetch,
+    port: config.port,
+    hostname: config.hostname,
   },
   (info) => {
     console.log(`🚀 Server is running on http://${info.address}:${info.port}`);
