@@ -1,3 +1,4 @@
+import { env } from '@windmills/db';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 
@@ -12,17 +13,12 @@ export const createDb = (connectionString: string) => {
   return drizzle(client);
 };
 
-// Initialize database connection - ensures db is never null
+// Initialize database connection - uses validated environment
 export const db = (() => {
   if (!dbInstance) {
-    const connectionString = process.env.DATABASE_URL;
-    if (!connectionString) {
-      throw new Error(
-        'DATABASE_URL environment variable is required but not set. ' +
-          'Please set DATABASE_URL in your environment variables.'
-      );
-    }
-    dbInstance = createDb(connectionString);
+    dbInstance = createDb(env.DATABASE_URL);
   }
   return dbInstance;
 })();
+
+export * as schema from '@windmills/db';

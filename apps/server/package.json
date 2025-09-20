@@ -12,10 +12,6 @@
     "deploy": "wrangler deploy",
     "deploy:staging": "wrangler deploy --env staging",
     "cf-typegen": "wrangler types",
-    "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
     "db:start": "docker compose up -d",
     "db:watch": "docker compose up",
     "db:stop": "docker compose stop",
@@ -37,7 +33,6 @@
   },
   "devDependencies": {
     "@types/node": "^22.13.11",
-    "drizzle-kit": "^0.31.2",
     "tsdown": "^0.15.1",
     "tsx": "^4.19.2",
     "typescript": "^5.8.2",

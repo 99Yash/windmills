@@ -7,13 +7,21 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "build": "tsc -b"
+    "build": "tsc -b",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@types/node": "^24.5.2",
+    "dotenv": "^17.2.1",
+    "drizzle-orm": "^0.44.2",
     "postgres": "^3.4.5",
-    "drizzle-orm": "^0.44.2"
+    "zod": "^4.0.2"
   },
   "devDependencies": {
+    "drizzle-kit": "^0.31.4",
     "typescript": "^5.8.2"
   }
 }
