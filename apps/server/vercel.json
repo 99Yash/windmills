@@ -1,5 +1,9 @@
 {
-  "buildCommand": "pnpm run build",
-  "installCommand": "pnpm install --frozen-lockfile",
-  "outputDirectory": "dist"
+  "buildCommand": "cd ../.. && pnpm install --frozen-lockfile && cd apps/server && pnpm run build",
+  "outputDirectory": "dist",
+  "functions": {
+    "dist/index.js": {
+      "runtime": "nodejs20.x"
+    }
+  }
 }

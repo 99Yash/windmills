@@ -4,21 +4,19 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { secureHeaders } from 'hono/secure-headers';
+import { env } from './env';
 import { auth } from './lib/auth';
 import { createContext } from './lib/context';
 import { appRouter } from './routers/index';
 import { checkHealth } from './utils/health';
 
-// Hono app for Vercel deployment
 const app = new Hono();
 
-// Security headers - important for production
 app.use(secureHeaders());
 
 app.use(logger());
 app.use('*', async (c, next) => {
-  const corsOrigin = process.env.CORS_ORIGIN || 'http://localhost:3001';
-  const origins = corsOrigin.split(',');
+  const origins = env.CORS_ORIGIN.split(',');
 
   return cors({
     origin: origins,
@@ -57,14 +55,8 @@ app.use(
 // Health check endpoint
 app.get('/health', async (c) => {
   try {
-    // Use environment variable for database connection
-    const connectionString = process.env.DATABASE_URL;
-
-    if (!connectionString) {
-      throw new Error('No database connection string available');
-    }
-
-    await checkHealth(connectionString);
+    // Use validated environment for database connection
+    await checkHealth(env.DATABASE_URL);
     return c.json(
       {
         status: 'ok',
@@ -105,6 +97,6 @@ export default app;
 
 // For local development with Node.js
 export const config = {
-  port: process.env.PORT ? Number.parseInt(process.env.PORT) : 3000,
-  hostname: process.env.HOSTNAME || '0.0.0.0',
+  port: env.PORT,
+  hostname: env.HOSTNAME,
 };

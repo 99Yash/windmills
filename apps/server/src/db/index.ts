@@ -1,6 +1,6 @@
-import { env } from '@windmills/db';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
+import { env } from '../env';
 
 // For Cloudflare Workers, we need to create the database connection
 // with the Hyperdrive binding, which will be passed from the context
