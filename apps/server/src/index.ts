@@ -92,11 +92,14 @@ app.get('/', (c) => {
   });
 });
 
+// For local development with Node.js
+const port = 3000;
+const hostname = '0.0.0.0';
+
+export const config = {
+  port,
+  hostname,
+};
+
 // Export for Vercel (Hono app directly)
 export default app;
-
-// For local development with Node.js
-export const config = {
-  port: process.env.PORT ? Number.parseInt(process.env.PORT) : 3000,
-  hostname: process.env.HOSTNAME || '0.0.0.0',
-};
