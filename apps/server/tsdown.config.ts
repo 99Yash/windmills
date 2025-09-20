@@ -16,4 +16,5 @@ export default defineConfig({
   ],
   // Bundle workspace packages
   noExternal: ['@windmills/db', '@windmills/lib'],
+  platform: 'node',
 });

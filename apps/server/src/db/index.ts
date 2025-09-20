@@ -1,6 +1,13 @@
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
-import { env } from '../env';
+import { z } from 'zod';
+
+// Inline environment validation for database
+const dbEnvSchema = z.object({
+  DATABASE_URL: z.string().url(),
+});
+
+const dbEnv = dbEnvSchema.parse(process.env);
 
 // For Cloudflare Workers, we need to create the database connection
 // with the Hyperdrive binding, which will be passed from the context
@@ -16,7 +23,7 @@ export const createDb = (connectionString: string) => {
 // Initialize database connection - uses validated environment
 export const db = (() => {
   if (!dbInstance) {
-    dbInstance = createDb(env.DATABASE_URL);
+    dbInstance = createDb(dbEnv.DATABASE_URL);
   }
   return dbInstance;
 })();
